@@ -124,6 +124,22 @@ resource "aws_security_group" "allow-web" {
 }
 
 #-----------------------------------------------
+# Configuring Key Pair
+#-----------------------------------------------
+resource "aws_key_pair" "tf-key-pair" {
+  key_name   = var.key_name
+  public_key = tls_private_key.rsa.public_key_openssh
+}
+resource "tls_private_key" "rsa" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+resource "local_file" "tf-key" {
+  content  = tls_private_key.rsa.private_key_pem
+  filename = var.key_name
+}
+
+#-----------------------------------------------
 # Configuring AWS EC2 instance
 #-----------------------------------------------
 resource "aws_instance" "ubuntu_server" {
@@ -132,6 +148,6 @@ resource "aws_instance" "ubuntu_server" {
   instance_type               = var.instance_type
   subnet_id                   = aws_subnet.public_subnet[count.index].id
   availability_zone           = var.azs[0]
-  key_name                    = "../AltSchool"
+  key_name                    = aws_key_pair.tf-key-pair.key_name
   associate_public_ip_address = true
 }
