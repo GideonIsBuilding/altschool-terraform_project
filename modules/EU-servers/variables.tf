@@ -3,7 +3,7 @@ variable "app_region" {
 }
 
 variable "ami" {
-  type = string
+  type = map(string)
 }
 
 variable "cidr_block" {
