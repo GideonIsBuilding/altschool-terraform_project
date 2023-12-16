@@ -144,10 +144,13 @@ resource "local_file" "tf-key" {
 #-----------------------------------------------
 resource "aws_instance" "ubuntu_server" {
   count                       = var.instance_count
-  ami                         = var.ami
+  ami                         = lookup(var.ami, terraform.workspace)
   instance_type               = var.instance_type
   subnet_id                   = aws_subnet.public_subnet[count.index].id
   availability_zone           = var.azs[0]
   key_name                    = aws_key_pair.tf-key-pair.key_name
   associate_public_ip_address = true
+  tags = {
+    Name = terraform.workspace
+  }
 }
