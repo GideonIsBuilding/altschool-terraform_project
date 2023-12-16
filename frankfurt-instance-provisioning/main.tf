@@ -1,7 +1,11 @@
 module "franfurt-instance" {
   source     = "../modules/EU-servers"
   app_region = "eu-central-1"
-  ami        = "ami-06dd92ecc74fdfb36"
+  ami = {
+    "Dev"     = "ami-06dd92ecc74fdfb36"
+    "Staging" = "ami-06dd92ecc74fdfb36"
+    "Prod"    = "ami-06dd92ecc74fdfb36"
+  }
 
   cidr_block = "10.0.0.0/16"
 
