@@ -1,7 +1,11 @@
 module "ireland-instance" {
   source     = "../modules/EU-servers"
   app_region = "eu-west-1"
-  ami        = "ami-0694d931cee176e7d"
+  ami = {
+    "Dev"     = "ami-0694d931cee176e7d"
+    "Staging" = "ami-0694d931cee176e7d"
+    "Prod"    = "ami-0694d931cee176e7d"
+  }
 
   cidr_block = "100.0.0.0/16"
 
